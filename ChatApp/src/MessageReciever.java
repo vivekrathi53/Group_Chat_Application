@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author DELL
  */
-public class MessageReciever extends Thread{
+public class MessageReciever extends Chatwindow implements Runnable{
 
     private final Socket clientSocket1;
     public MessageReciever(Socket clientSocket1) {
@@ -39,20 +39,14 @@ public class MessageReciever extends Thread{
     
     private void handlerecieving(Socket clientSocket1) throws IOException, InterruptedException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket1.getInputStream()));
-//        OutputStream outputstream = clientSocket1.getOutputStream();
-        String msg = "Recieving Messages...";
-//        System.out.println(msg);
-//        outputstream.write(msg.getBytes());
-        Chatwindow c1 = new Chatwindow();
-        while(true)
+        String line;
+        while((line = reader.readLine())!=null)
         {
-            String line = reader.readLine();
             System.out.println("Message Recieved");
             if("quit".equalsIgnoreCase(line)){
                 break;
             }
-            c1.messagedisplaybox.setText("\n"+line);
+            Chatwindow.messagedisplaybox.setText("\n"+line);
         }
-        clientSocket1.close();
     }
 }
