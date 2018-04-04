@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -30,13 +31,16 @@ public class Server {
                 clientSocket[i] = serverSocket.accept();
                 System.out.println("Accepted connection from"+clientSocket[i]);
                 ServerWorker worker = new ServerWorker(clientSocket[i]);
+                Thread t2 = new Thread(worker);
                 clientsnames[i]="Vivek";
+                OutputStream output = clientSocket[i].getOutputStream();
+                output.write("Hello User".getBytes());
                 System.out.println(++i);
-                worker.run();
+                t2.start();
                 
             }
         } catch (IOException ex) {
-            Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
