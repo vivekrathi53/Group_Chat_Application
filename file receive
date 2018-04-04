@@ -1,0 +1,17 @@
+package chattingappfaeature;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+public  abstract class input extends InputStream 
+{
+ public static void main(String args[]){    
+          try{    
+            FileInputStream fin=new FileInputStream("E:\\english\\Preposition Rules-2.docx");    
+            int i=fin.read();  
+            System.out.print((char)i);     
+            fin.close();    
+          }catch(Exception e){System.out.println(e);}    
+         }    
+}
+
