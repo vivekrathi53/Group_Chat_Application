@@ -46,15 +46,16 @@ public class ServerWorker extends Server implements Runnable {
     {
         int onlineClientsCount= i;
         System.out.println("ServerWorker.Sendmessages() "+onlineClientsCount);
-        for(int i=0;i<onlineClientsCount;i++)
+        for(int j=0;j<onlineClientsCount;j++)
         {
-            System.out.println("inside "+clientSocket[i]+"\n"+clientsnames[i]);
-            if(clientname.equals(clientsnames[i]))
+            System.out.println("inside "+clientSocket[j]+clientsnames[j]);
+            if(clientname.equals(clientsnames[j]))
             {
                 try {
-                    OutputStream outputStream=clientSocket[i].getOutputStream();
+                    OutputStream outputStream=clientSocket[j].getOutputStream();
                     String messageline = message;
                     outputStream.write(messageline.getBytes());
+                    outputStream.flush();
                     return 1;
                 } catch (IOException ex) {
                     System.out.println("Error in generating outputstream");
@@ -73,29 +74,30 @@ public class ServerWorker extends Server implements Runnable {
         {
             System.out.println(line);
             int n= line.length();
-            for(int i=0,flag=0;line.charAt(i)!=':'&&i<n;i++)
+            for(int k=0,flag=0;line.charAt(i)!=':'&&k<n;k++)
             {
-                if(line.charAt(i)=='~')
+                if(line.charAt(k)=='~')
                 {
-                    i++;
+                    k++;
                     String clientname;
-                    int j=i;
-                    for(;line.charAt(i)!='~'&&line.charAt(i)!=':';)
+                    int j=k;
+                    for(;line.charAt(k)!='~'&&line.charAt(k)!=':';)
                     {
-                        i++;
+                        k++;
                     }
-                    clientname=line.substring(j,i);
-                    i=j-1;
-                    System.out.println(line.substring(0,i)+" "+clientname);
-                    if(Sendmessages(clientname,line.substring(0, i))==0)
+                    clientname=line.substring(j,k);
+                    k=j-1;
+                    System.out.println(line.substring(0,k)+" "+clientname);
+                    int response = Sendmessages(clientname,line.substring(0, k));
+                    if(response==0)
                     {
                         System.out.println("Client not online");
                     }
-                    if(Sendmessages(clientname,line.substring(0, i))==1)
+                    if(response==1)
                     {
                         System.out.println("message sent");
                     }
-                    i--;
+                    //k--;
                     flag=1;
                 }
                 
@@ -103,7 +105,8 @@ public class ServerWorker extends Server implements Runnable {
             if("quit".equalsIgnoreCase(line)){
                 break;
             }
-            //outputStream.write(msg.getBytes());    
+            //outputStream.write(msg.getBytes()); 
+            line=null;
         }
         clientSocket1.close();
     }
