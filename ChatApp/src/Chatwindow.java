@@ -29,7 +29,20 @@ public class Chatwindow extends javax.swing.JFrame {
      * Creates new form Chatwindow
      */
     public Chatwindow() {
-        initComponents();
+        initComponents(); 
+    }
+    void Connect()
+    {
+        System.out.println("Connecting To server...");
+                try {
+                    soc = new Socket("localhost",8818);
+                    System.out.println("Connected with server"+soc);
+                } catch (IOException ex) {
+                    Logger.getLogger(Chatwindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                MessageReciever m1 = new MessageReciever(soc);
+                Thread t1 = new Thread(m1);
+                t1.start();
     }
 
     /**
@@ -62,7 +75,6 @@ public class Chatwindow extends javax.swing.JFrame {
 
         Recievername.setText("Grp Name");
 
-        messagedisplaybox.setEditable(false);
         messagedisplaybox.setColumns(20);
         messagedisplaybox.setRows(5);
         jScrollPane1.setViewportView(messagedisplaybox);
@@ -231,49 +243,7 @@ int SendMessage()
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Chatwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Chatwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Chatwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Chatwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Chatwindow().setVisible(true);
-                System.out.println("Connecting To server...");
-                try {
-                    soc = new Socket("localhost",8818);
-                    System.out.println("Connected with server");
-                } catch (IOException ex) {
-                    Logger.getLogger(Chatwindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                MessageReciever m1 = new MessageReciever(soc);
-                Thread t1 = new Thread(m1);
-                t1.start();
-            }
-        });
-        
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Fileattachbutton;
@@ -284,6 +254,6 @@ int SendMessage()
     private javax.swing.JButton Sendbutton;
     private javax.swing.JButton Sendfilebutton;
     private javax.swing.JScrollPane jScrollPane1;
-    protected static javax.swing.JTextArea messagedisplaybox;
+    public static javax.swing.JTextArea messagedisplaybox;
     // End of variables declaration//GEN-END:variables
 }

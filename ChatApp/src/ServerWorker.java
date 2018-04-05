@@ -8,10 +8,12 @@
 
 
 import java.io.BufferedReader;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Date;
 import java.util.Scanner;
@@ -52,10 +54,12 @@ public class ServerWorker extends Server implements Runnable {
             if(clientname.equals(clientsnames[j]))
             {
                 try {
-                    OutputStream outputStream=clientSocket[j].getOutputStream();
-                    String messageline = message;
-                    outputStream.write(messageline.getBytes());
-                    outputStream.flush();
+//                    OutputStream outputStream=clientSocket[j].getOutputStream();
+//                    String messageline = message;
+//                    outputStream.write(messageline.getBytes());
+//                    outputStream.
+                    PrintWriter out =new PrintWriter(clientSocket1.getOutputStream(),true);
+                    out.println(message);
                     return 1;
                 } catch (IOException ex) {
                     System.out.println("Error in generating outputstream");

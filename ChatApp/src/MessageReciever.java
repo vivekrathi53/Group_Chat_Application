@@ -21,9 +21,10 @@ import java.util.logging.Logger;
  */
 public class MessageReciever extends Chatwindow implements Runnable{
 
-    private final Socket clientSocket1;
+    private Socket clientSocket1;
     public MessageReciever(Socket clientSocket1) {
         this.clientSocket1 = clientSocket1;
+       this.messagedisplaybox.append("\noyehoe");
     }
 
     
@@ -40,13 +41,15 @@ public class MessageReciever extends Chatwindow implements Runnable{
     private void handlerecieving(Socket clientSocket1) throws IOException, InterruptedException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket1.getInputStream()));
         String line;
+        System.out.println("Messages recieving");
         while((line = reader.readLine())!=null)
         {
             System.out.println("Message Recieved");
             if("quit".equalsIgnoreCase(line)){
                 break;
             }
-            Chatwindow.messagedisplaybox.setText("\n"+line);
+            System.out.println(line);
+            Chatwindow.messagedisplaybox.append("\n"+line);
         }
     }
 }
