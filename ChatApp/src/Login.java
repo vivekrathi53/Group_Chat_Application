@@ -133,7 +133,7 @@ public class Login extends javax.swing.JFrame {
         String un=UN.getText();
         String pass=PASS.getText();
         Class.forName("java.sql.Driver");
-        Connection con=DriverManager.getConnection("jdbc:mysql://localhost/chatAPP","root","password");
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost/chatApp","root","password");
         Statement stmt=con.createStatement();
         String q1="select password from currentusers where username='"+(un)+"';";
         ResultSet rs=stmt.executeQuery(q1);
@@ -142,6 +142,10 @@ public class Login extends javax.swing.JFrame {
         if(p.equals(pass))
         {
             JOptionPane.showMessageDialog(this,"Successful Log In");
+            StartupWindow s1 = new StartupWindow();
+            s1.Nameofuser.setText(un);
+            s1.setVisible(true);
+            this.dispose();
         }
 }
 catch(Exception e)

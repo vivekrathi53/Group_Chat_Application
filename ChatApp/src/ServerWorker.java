@@ -65,6 +65,10 @@ public class ServerWorker extends Server implements Runnable {
         }
         return 0;
     }
+    void RecieveFile()
+    {
+        
+    }
     private void handleClientSocket(Socket clientSocket1) throws IOException, InterruptedException{
         InputStream inputStream = clientSocket1.getInputStream();
         //OutputStream outputStream = clientSocket2.getOutputStream();
@@ -76,6 +80,7 @@ public class ServerWorker extends Server implements Runnable {
             int n= line.length();
             for(int k=0,flag=0;line.charAt(i)!=':'&&k<n;k++)
             {
+                if(n>16&&line.substring(0,16).equals("!!FILEINCOMING!!")) RecieveFile();
                 if(line.charAt(k)=='~')
                 {
                     k++;
