@@ -23,7 +23,7 @@ import javax.swing.JFileChooser;
  * @author DELL
  */
 public class Chatwindow extends javax.swing.JFrame {
-    static Socket soc = null;
+    private Socket soc = null;
     public File selectedfile;
     /**
      * Creates new form Chatwindow
@@ -31,6 +31,12 @@ public class Chatwindow extends javax.swing.JFrame {
     public Chatwindow() {
         initComponents(); 
     }
+    
+    public Socket getSocket() {
+        return soc;
+    }
+            
+    
     void Connect()
     {
         System.out.println("Connecting To server...");
@@ -40,7 +46,7 @@ public class Chatwindow extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(Chatwindow.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                MessageReciever m1 = new MessageReciever(soc);
+                MessageReciever m1 = new MessageReciever(this);
                 Thread t1 = new Thread(m1);
                 t1.start();
     }
@@ -57,12 +63,12 @@ public class Chatwindow extends javax.swing.JFrame {
         Nameofuser = new javax.swing.JLabel();
         Recievername = new javax.swing.JLabel();
         Messagefield = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        messagedisplaybox = new javax.swing.JTextArea();
         Sendbutton = new javax.swing.JButton();
         Fileattachbutton = new javax.swing.JButton();
         Filenamedisplay = new javax.swing.JTextField();
         Sendfilebutton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        messagedisplaybox = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -74,10 +80,6 @@ public class Chatwindow extends javax.swing.JFrame {
         Nameofuser.setText("User");
 
         Recievername.setText("Grp Name");
-
-        messagedisplaybox.setColumns(20);
-        messagedisplaybox.setRows(5);
-        jScrollPane1.setViewportView(messagedisplaybox);
 
         Sendbutton.setText("Send");
         Sendbutton.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +109,10 @@ public class Chatwindow extends javax.swing.JFrame {
             }
         });
 
+        messagedisplaybox.setColumns(20);
+        messagedisplaybox.setRows(5);
+        jScrollPane2.setViewportView(messagedisplaybox);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,19 +132,18 @@ public class Chatwindow extends javax.swing.JFrame {
                                 .addComponent(Sendbutton)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(84, 84, 84)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(Filenamedisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Fileattachbutton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Sendfilebutton)))
-                        .addGap(0, 92, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addComponent(Filenamedisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Fileattachbutton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Sendfilebutton)
+                        .addGap(0, 118, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,9 +162,9 @@ public class Chatwindow extends javax.swing.JFrame {
                         .addComponent(Sendfilebutton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(Fileattachbutton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -219,7 +224,7 @@ int SendMessage()
         try {
             String filepath=selectedfile.getAbsolutePath();
             fin = new FileInputStream(filepath);  
-            byte b[]=new byte[999999999];
+            byte b[]=new byte[9999999];
             fin.read(b,0,b.length);
             OutputStream os=soc.getOutputStream();
             os.write("!!FILEINCOMING!!".getBytes());
@@ -247,13 +252,13 @@ int SendMessage()
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Fileattachbutton;
-    private javax.swing.JTextField Filenamedisplay;
+    public javax.swing.JTextField Filenamedisplay;
     private javax.swing.JTextField Messagefield;
     protected javax.swing.JLabel Nameofuser;
     protected javax.swing.JLabel Recievername;
     private javax.swing.JButton Sendbutton;
     private javax.swing.JButton Sendfilebutton;
-    private javax.swing.JScrollPane jScrollPane1;
-    public static javax.swing.JTextArea messagedisplaybox;
+    private javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JTextArea messagedisplaybox;
     // End of variables declaration//GEN-END:variables
 }

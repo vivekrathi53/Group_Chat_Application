@@ -4,14 +4,9 @@
  * and open the template in the editor.
  */
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Date;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,27 +14,27 @@ import java.util.logging.Logger;
  *
  * @author DELL
  */
-public class MessageReciever extends Chatwindow implements Runnable{
+public class MessageReciever implements Runnable{
 
-    private Socket clientSocket1;
-    public MessageReciever(Socket clientSocket1) {
-        this.clientSocket1 = clientSocket1;
-       this.messagedisplaybox.append("\noyehoe");
-    }
+    private Chatwindow currentWindow;
+    public MessageReciever(Chatwindow window) {
+        this.currentWindow = window;
+       
+   }
 
     
     @Override 
     public void run(){
         try {
             //r.run();
-            handlerecieving(clientSocket1);
+            handlerecieving();
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(MessageReciever.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void handlerecieving(Socket clientSocket1) throws IOException, InterruptedException{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket1.getInputStream()));
+    private void handlerecieving() throws IOException, InterruptedException{
+        BufferedReader reader = new BufferedReader(new InputStreamReader(currentWindow.getSocket().getInputStream()));
         String line;
         System.out.println("Messages recieving");
         while((line = reader.readLine())!=null)
@@ -49,7 +44,7 @@ public class MessageReciever extends Chatwindow implements Runnable{
                 break;
             }
             System.out.println(line);
-            Chatwindow.messagedisplaybox.append("\n"+line);
+            currentWindow.messagedisplaybox.append(line);
         }
     }
 }

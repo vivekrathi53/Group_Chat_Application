@@ -8,6 +8,7 @@
 
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,6 +72,15 @@ public class ServerWorker extends Server implements Runnable {
     }
     void RecieveFile()
     {
+        try {
+            FileInputStream fin = new FileInputStream("F:\\java projects\\Group_Chat_Application-master\\ChatApp\\src\\Server Recieved Files\\a1.txt");
+            byte b[] = new byte[999999999];
+            fin.read(b,0,b.length);
+            OutputStream os = clientSocket1.getOutputStream();
+            os.write(b,0,b.length);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerWorker.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     private void handleClientSocket(Socket clientSocket1) throws IOException, InterruptedException{

@@ -18,8 +18,8 @@ import java.util.logging.Logger;
  */
 public class Server {
     public static Socket[] clientSocket = new Socket[500];
-    public static String[] clientsnames = new String[500];
-    public static int i;
+    public static String[] clientsnames = new String[500];//username is saved here
+    public static int i;//i is the count of number of clients
     public static void main(String[] Args) throws IOException{
         try {
             int port = 8818;
@@ -27,14 +27,12 @@ public class Server {
             i=0;
             while(true){
                 System.out.println("About to accept the connection...");
-                clientSocket[i]=new Socket();
+                clientSocket[i]=new Socket();//socket details of each and every client is saved
                 clientSocket[i] = serverSocket.accept();
                 System.out.println("Accepted connection from"+clientSocket[i]);
                 ServerWorker worker = new ServerWorker(clientSocket[i]);
                 Thread t2 = new Thread(worker);
                 clientsnames[i]="Vivek";
-                OutputStream output = clientSocket[i].getOutputStream();
-                output.write("Hello User".getBytes());
                 System.out.println(++i);
                 t2.start();
                 
