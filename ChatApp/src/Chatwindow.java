@@ -28,8 +28,9 @@ public class Chatwindow extends javax.swing.JFrame {
     /**
      * Creates new form Chatwindow
      */
-    public Chatwindow() {
+    public Chatwindow(Socket soc) {
         initComponents(); 
+        this.soc=soc;
     }
     
     public Socket getSocket() {
@@ -39,13 +40,6 @@ public class Chatwindow extends javax.swing.JFrame {
     
     void Connect()
     {
-        System.out.println("Connecting To server...");
-                try {
-                    soc = new Socket("localhost",8818);
-                    System.out.println("Connected with server"+soc);
-                } catch (IOException ex) {
-                    Logger.getLogger(Chatwindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 MessageReciever m1 = new MessageReciever(this);
                 Thread t1 = new Thread(m1);
                 t1.start();
@@ -172,7 +166,7 @@ public class Chatwindow extends javax.swing.JFrame {
 int SendMessage()
 {
     try {
-            String message  = Messagefield.getText()+"~Vivek:";
+            String message  = Messagefield.getText()+":";
             PrintWriter out =new PrintWriter(soc.getOutputStream(),true);
             out.println(message);
             System.out.println("Message sent to server");
@@ -228,7 +222,7 @@ int SendMessage()
             fin.read(b,0,b.length);
             OutputStream os=soc.getOutputStream();
             os.write("!!FILEINCOMING!!".getBytes());
-            os.flush();
+            //os.flush();
             os = soc.getOutputStream();
             os.write(b, 0, b.length);
             System.out.println("File Send");

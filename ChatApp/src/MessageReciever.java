@@ -44,7 +44,7 @@ public class MessageReciever implements Runnable{
                 break;
             }
             System.out.println(line);
-            currentWindow.messagedisplaybox.append(line);
+            currentWindow.messagedisplaybox.append(line+"\n");
         }
     }
 }
