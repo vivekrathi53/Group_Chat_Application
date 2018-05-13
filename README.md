@@ -21,3 +21,4 @@ JDBC, Socket Programming, Multithreading.
 ##### Encryption of chats
 ##### Direct client to client communication option which will be more secured as present version will include client to server to client communication.
 ##### Improvement in GUI.
+### Refer presentation for info :)
